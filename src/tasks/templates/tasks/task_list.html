@@ -1,0 +1,39 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Todo List</title>
+     <link rel="stylesheet" type="text/css" href="{% static 'tasks/styles.css' %}">
+</head>
+<body>
+    <h1>My Todo List</h1>
+
+    <form method="POST">
+        {% csrf_token %}
+        <input type="text" name="title" placeholder="Enter a new task" required>
+        <button type="submit">Add Task</button>
+    </form>
+
+    <ul>
+    {% for task in tasks %}
+        <li>
+            <form action="{% url 'complete_task' task.id %}" method="POST" style="display: inline;">
+                {% csrf_token %}
+                <input type="checkbox" onchange="this.form.submit()" {% if task.completed %}checked{% endif %}>
+                <span {% if task.completed %}style="text-decoration: line-through;"{% endif %}>
+                    {{ task.title }}
+                </span>
+            </form>
+
+            <!-- Delete button -->
+            <form action="{% url 'delete_task' task.id %}" method="POST" style="display:inline;">
+                {% csrf_token %}
+                <button type="submit" style="color:red;">Delete</button>
+            </form>
+        </li>
+    {% endfor %}
+</ul>
+
+</body>
+</html>
