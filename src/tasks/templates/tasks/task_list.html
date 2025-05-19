@@ -8,6 +8,7 @@
 </head>
 <body>
     <h1>My Todo List</h1>
+    
 
     <form method="POST">
         {% csrf_token %}
@@ -34,6 +35,6 @@
         </li>
     {% endfor %}
 </ul>
-
+<a href="{% url 'logout' %}">Logout</a>
 </body>
 </html>
