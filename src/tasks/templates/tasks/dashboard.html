@@ -1,0 +1,46 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Dashboard - My Tasks</title>
+     <link rel="stylesheet" href="{% static 'tasks/styles.css' %}">
+
+</head>
+<body>
+    <h2>My Tasks Dashboard</h2>
+    {% if user.is_authenticated %}
+    <p style="text-align: right;">
+        Logged in as {{ user.username }} |
+        <a href="{% url 'logout' %}">Logout</a>
+    </p>
+{% endif %}
+
+    {% for date, tasks_on_date in grouped_tasks.items %}
+        <div class="date-group">
+            <h3 class="date-heading">{{ date }}</h3>
+            {% for task in tasks_on_date %}
+                <div class="task-item">
+                    <form action="{% url 'toggle_complete' task.id %}" method="POST">
+                        {% csrf_token %}
+                        <input type="checkbox" onchange="this.form.submit()" {% if task.completed %}checked{% endif %}>
+                    </form>
+                    <div class="task-title {% if task.completed %}completed{% endif %}">
+                        {{ task.title }}
+                    </div>
+                    <div class="icons">
+                        <a href="{% url 'edit_task' task.id %}">✏️</a>
+                        <a href="{% url 'delete_task' task.id %}" onclick="return confirm('Are you sure you want to delete this task?')">🗑️</a>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% endfor %}
+
+     <p style="text-align: center;">
+            <a href="{% url 'task_list' %}">Go to Task List</a>
+        </p>
+
+   
+</body>
+</html>

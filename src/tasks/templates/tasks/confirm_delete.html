@@ -1,0 +1,23 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Confirm Delete</title>
+    <link rel="stylesheet" href="{% static 'tasks/styles.css' %}">
+  
+</head>
+<body>
+    <div class="container">
+        <h2>🗑️ Confirm Delete</h2>
+        <p>Are you sure you want to delete this task?</p>
+        <strong>{{ task.title }}</strong>
+
+        <form method="POST" class="btn-group">
+            {% csrf_token %}
+            <button type="submit" class="btn-confirm">Yes, Delete</button>
+            <a href="{% url 'dashboard' %}" class="btn-cancel">Cancel</a>
+        </form>
+    </div>
+</body>
+</html>

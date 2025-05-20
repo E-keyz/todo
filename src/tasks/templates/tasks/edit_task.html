@@ -1,0 +1,32 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Edit Task</title>
+    <link rel="stylesheet" href="{% static 'tasks/styles.css' %}">
+</head>
+<body>
+    <div class="container">
+        <h2>Edit Task ✏️</h2>
+
+        <form method="POST">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="title">Task Title:</label>
+                <input type="text" name="title" id="title" value="{{ task.title }}" required>
+            </div>
+
+            <div class="form-group">
+                <label>
+                    <input type="checkbox" name="completed" {% if task.completed %}checked{% endif %}>
+                    Mark as Completed
+                </label>
+            </div>
+
+            <button type="submit">Save Changes</button>
+            <a href="{% url 'dashboard' %}" class="cancel-link">Cancel</a>
+        </form>
+    </div>
+</body>
+</html>
