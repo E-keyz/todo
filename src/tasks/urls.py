@@ -1,15 +1,32 @@
 from django.urls import path
-from .views import task_list, complete_task, delete_task, register_user, login_view, logout_view, dashboard, edit_task, toggle_complete
+from django.contrib.auth import views as auth_views
+from .views import task_list, complete_task, delete_task, register_view, login_view, logout_view, dashboard, edit_task, toggle_complete
 
 urlpatterns = [
     path('tasks/', task_list, name='task_list'),
     path('complete/<int:task_id>/', complete_task, name='complete_task'),
     path('delete/<int:task_id>/', delete_task, name='delete_task'),
-    path('register/', register_user, name='register'),
+    path('register/', register_view, name='register'),
     path('login/', login_view, name='login'),
     path('logout/', logout_view, name='logout'),
     path('', dashboard, name='dashboard'),
     path('edit/<int:task_id>/', edit_task, name='edit_task'),
     path('toggle/<int:task_id>/', toggle_complete, name='toggle_complete'),
 
+
+path('password-reset/',
+         auth_views.PasswordResetView.as_view(template_name='registration/password_reset_form.html'),
+         name='password_reset'),
+
+    path('password-reset/done/',
+         auth_views.PasswordResetDoneView.as_view(template_name='registration/password_reset_done.html'),
+         name='password_reset_done'),
+
+    path('reset/<uidb64>/<token>/',
+         auth_views.PasswordResetConfirmView.as_view(template_name='registration/password_reset_confirm.html'),
+         name='password_reset_confirm'),
+
+    path('reset/done/',
+         auth_views.PasswordResetCompleteView.as_view(template_name='registration/password_reset_complete.html'),
+         name='password_reset_complete'),
 ]

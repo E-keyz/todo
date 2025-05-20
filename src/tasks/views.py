@@ -11,17 +11,27 @@ from tasks.models import Task
 
 # Create your views here.
 
-def register_user(request):
-    if request.method =='POST':
-        form = UserCreationForm(request.POST)
-        if form.is_valid():
-            form.save()
-            messages.success(request, "Account Created Successfully")
-            return redirect('login')
-        
-    else:
-        form = UserCreationForm()
-    return render(request, 'tasks/register.html', {'form': form})
+from django.contrib.auth.models import User
+from django.contrib import messages
+
+def register_view(request):
+    if request.method == 'POST':
+        username = request.POST.get('username')
+        email = request.POST.get('email')
+        password = request.POST.get('password')
+
+        # Check for duplicate email
+        if User.objects.filter(email=email).exists():
+            messages.error(request, "Email already in use.")
+            return redirect('register')
+
+        if username and email and password:
+            user = User.objects.create_user(username=username, email=email, password=password)
+            login(request, user)
+            return redirect('dashboard')
+
+    return render(request, 'tasks/register.html')
+
 
 
 def login_view(request):
