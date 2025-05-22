@@ -28,7 +28,7 @@ def register_view(request):
         if username and email and password:
             user = User.objects.create_user(username=username, email=email, password=password)
             login(request, user)
-            return redirect('dashboard')
+            return redirect('task_list')
 
     return render(request, 'tasks/register.html')
 
@@ -55,8 +55,9 @@ def logout_view(request):
 def task_list(request):
     if request.method == 'POST':
         title = request.POST.get('title')
-        if title:
-            Task.objects.create(title=title, user=request.user)
+        priority = request.POST.get('priority')
+        if title and priority:
+            Task.objects.create(title=title, priority=priority, user=request.user)
             return redirect('/')
     tasks = Task.objects.all()
     return render(request, 'tasks/task_list.html', {'tasks': tasks})
@@ -93,15 +94,17 @@ def dashboard(request):
     for date, items in groupby(tasks, key=lambda x: x.created_date): # type: ignore
         grouped_tasks[date] = list(items)
 
-    total = tasks.count()
-    completed = tasks.filter(completed=True).count()
-    pending = total - completed
+    #total = tasks.count()
+   # completed = tasks.filter(completed=True).count()
+    #pending = total - completed
+    
 
     return render(request, 'tasks/dashboard.html', {
         'grouped_tasks': grouped_tasks,
-        'total': total,
-        'completed': completed,
-        'pending': pending,
+        #'total': total,
+       # 'completed': completed,
+        #'pending': pending,
+    
     })
 
 
@@ -125,10 +128,12 @@ def edit_task(request, task_id):
 
     if request.method == 'POST':
         title = request.POST.get('title')
+        priority = request.POST.get('priority')
         completed = request.POST.get('completed') == 'on'
         if title:
             task.title = title
             task.completed = completed
+            task.priority = priority
             task.save()
             return redirect('dashboard')
         

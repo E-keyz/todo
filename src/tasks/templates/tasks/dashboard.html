@@ -16,14 +16,25 @@
     </p>
 {% endif %}
 
+
     {% for date, tasks_on_date in grouped_tasks.items %}
         <div class="date-group">
             <h3 class="date-heading">{{ date }}</h3>
+             
             {% for task in tasks_on_date %}
+               
                 <div class="task-item">
+                    <li class="
+            {% if task.priority == 'high' %} priority-high
+            {% elif task.priority == 'medium' %} priority-medium
+            {% elif task.priority == 'low' %} priority-low
+            {% endif %}
+        ">
                     <form action="{% url 'toggle_complete' task.id %}" method="POST">
+                    
                         {% csrf_token %}
                         <input type="checkbox" onchange="this.form.submit()" {% if task.completed %}checked{% endif %}>
+            
                     </form>
                     <div class="task-title {% if task.completed %}completed{% endif %}">
                         {{ task.title }}
@@ -33,14 +44,20 @@
                         <a href="{% url 'delete_task' task.id %}" onclick="return confirm('Are you sure you want to delete this task?')">🗑️</a>
                     </div>
                 </div>
+            </li>
+                
             {% endfor %}
         </div>
-    {% endfor %}
 
+      
+    {% endfor %}
+  
      <p style="text-align: center;">
             <a href="{% url 'task_list' %}">Go to Task List</a>
         </p>
 
-   
+  <a href="{% url 'task_list' %}" class="fab" title="Add Task">
+  <span class="fab-icon">+</span>
+</a> 
 </body>
 </html>

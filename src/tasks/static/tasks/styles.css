@@ -255,7 +255,6 @@ li {
             margin-bottom: 10px;
             border-radius: 6px;
             box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-            display: flex;
             align-items: center;
             justify-content: space-between;
         }
@@ -276,3 +275,53 @@ li {
             color: #e74c3c;
         }
 
+.priority-high {
+    background-color: #ffe5e5;
+    border-left: 6px solid red;
+}
+
+.priority-medium {
+    background-color: #fffbe5;
+    border-left: 6px solid orange;
+}
+
+.priority-low {
+    background-color: #e5ffe5;
+    border-left: 6px solid green;
+}
+
+li {
+    padding: 10px;
+    margin-bottom: 5px;
+    border-radius: 5px;
+    list-style: none;
+}
+
+/* Floating Action Button */
+.fab {
+  position: fixed;
+  bottom: 60px;
+  right: 100px;
+  width: 40px;
+  height: 40px;
+  background: #0b98da;
+  color: #fff;
+  border-radius: 50%;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2rem;
+  text-decoration: none;
+  transition: background 0.2s;
+  z-index: 1000;
+}
+
+.fab:hover {
+  background: #1565c0;
+}
+
+.fab-icon {
+  font-size: 2.2rem;
+  line-height: 1;
+}

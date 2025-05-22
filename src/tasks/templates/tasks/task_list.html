@@ -10,15 +10,27 @@
     <h1>My Todo List</h1>
     
 
-    <form method="POST">
-        {% csrf_token %}
-        <input type="text" name="title" placeholder="Enter a new task" required>
-        <button type="submit">Add Task</button>
-    </form>
+   <form method="post">
+    {% csrf_token %}
+    <input type="text" name="title" placeholder="Task title" required>
+    
+    <select name="priority" required>
+        <option value="high">High Priority</option>
+        <option value="medium" selected>Medium Priority</option>
+        <option value="low">Low Priority</option>
+    </select>
+
+    <button type="submit">Add Task</button>
+</form>
 
     <ul>
     {% for task in tasks %}
-        <li>
+        <li class="
+            {% if task.priority == 'high' %} priority-high
+            {% elif task.priority == 'medium' %} priority-medium
+            {% elif task.priority == 'low' %} priority-low
+            {% endif %}
+        ">
             <form action="{% url 'complete_task' task.id %}" method="POST" style="display: inline;">
                 {% csrf_token %}
                 <input type="checkbox" onchange="this.form.submit()" {% if task.completed %}checked{% endif %}>
@@ -28,13 +40,20 @@
             </form>
 
             <!-- Delete button -->
-            <form action="{% url 'delete_task' task.id %}" method="POST" style="display:inline;">
+            <!-- <form action="{% url 'delete_task' task.id %}" method="POST" style="display:inline;">
                 {% csrf_token %}
-                <button type="submit" style="color:red;">Delete</button>
-            </form>
+               <button type="submit" style="color:red;">Delete</button> 
+            </form> -->
         </li>
     {% endfor %}
 </ul>
-<a href="{% url 'logout' %}">Logout</a>
+
+<a href="{% url 'dashboard' %}" class="fab" title="Go Home">
+   <span class="fab-icon">
+    <svg width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+      <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/>
+    </svg>
+  </span> <!-- Unicode home icon -->
+</a>
 </body>
 </html>
